@@ -40,7 +40,7 @@ class CreateQuestionSerializer(serializers.ModelSerializer):
 
 
 # ======================
-# Test
+# Questionary
 # ======================
 class QuestionarySerializer(serializers.ModelSerializer):
 
@@ -56,3 +56,11 @@ class CreateQuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Questionary
         fields = ('idQuestionary', 'name', 'questions')
+
+
+# ======================
+# QuestionaryResult
+# ======================
+class QuestionaryResultSerializer(serializers.Serializer):
+
+    scores = serializers.FloatField()
