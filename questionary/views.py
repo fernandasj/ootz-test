@@ -19,7 +19,7 @@ class QuestionaryViewSet(viewsets.ModelViewSet):
         
         for question in questions:
             new_question = models.Question.objects.create(headQuestion=question['headQuestion'])
-            questionary.questions.add(new_question)
+            new_questionary.questions.add(new_question)
             for choice in question['choices']:
                 new_choice = models.Choice.objects.create(textChoice=choice['textChoice'], question_id=new_question.pk, score=choice['score'])
 
@@ -30,3 +30,17 @@ class QuestionaryViewSet(viewsets.ModelViewSet):
         if self.request.method.lower() == 'get':
             return serializers.QuestionarySerializer
         return super().get_serializer_class()
+
+
+class QuestionaryResultViewSet(viewsets.ModelViewSet):
+
+    queryset = models.Choice.objects.all()
+
+    def create(self, request):
+        result = 0
+
+        for choice in request.data['choices']:
+            answer_choice = self.queryset.get(pk=choice['choice_id'])
+            result += answer_choice.score
+
+        return Response({'scores': result})
